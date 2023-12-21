@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 
-namespace ConsoleApp4
+namespace SKFunctionCalling
 {
     public class CustomHttpClientHandler : HttpClientHandler
     {

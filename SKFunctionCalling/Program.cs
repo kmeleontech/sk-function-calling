@@ -13,10 +13,11 @@ using Microsoft.SemanticKernel.Connectors.OpenAI;
 using Microsoft.SemanticKernel.Connectors.AI;
 using Microsoft.SemanticKernel.Plugins.Core;
 using Microsoft.SemanticKernel.Plugins.OpenApi;
-using ConsoleApp4;
+using FunctionCalling;
 using System.Diagnostics;
+using SKFunctionCalling;
 // This example shows how to use OpenAI's tool calling capability via the chat completions interface.
-public static class SKFunctionCalling
+public static class SKFunctionCallingTest
 {
     static async Task Main(string[] args)
     {

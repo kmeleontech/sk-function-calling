@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKFunctionCalling", "ConsoleApp4\SKFunctionCalling.csproj", "{030F2492-15FB-4FB9-B600-CE629A9B8A87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SKFunctionCalling", "SKFunctionCalling\SKFunctionCalling.csproj", "{030F2492-15FB-4FB9-B600-CE629A9B8A87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
