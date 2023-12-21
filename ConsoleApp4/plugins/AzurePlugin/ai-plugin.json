@@ -1,0 +1,21 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "AzureManagementPlugin",
+  "name_for_human": "Azure Management Plugin",
+  "description_for_human": "Connects to Azure Management API to execute various operations.",
+  "description_for_model": "Executes various operations in Azure such as listing or restarting VMs, listing subscriptions and more using the Azure Management APIs.",
+  "api": {
+    "type": "openapi",
+    "url": "https://sagepocdatatempodev.blob.core.windows.net/plugins/openapi.yaml"
+  },
+  //"auth": {
+  //  "type": "service_http",
+  //  "authorization_type": "bearer"
+  //},
+  "auth": {
+    "type": "none"
+  },
+  "logo_url": "https://images.squarespace-cdn.com/content/v1/64755252987c0e0d935816db/6b651418-384c-49b2-96d8-a206dfcdf9b6/LOGO+OK+KMELEON.png?format=1500w",
+  "contact_email": "angel@kmeleon.tec",
+  "legal_info_url": "https://kmeleon.tech/"
+}

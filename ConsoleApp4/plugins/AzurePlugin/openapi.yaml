@@ -1,0 +1,293 @@
+openapi: 3.0.0
+servers:
+  - description: Azure Management APIs
+    url: https://management.azure.com
+info:
+  description: Azure Management APIs is used to execute various operations in Azure such as listing or restarting VMs, listing subscriptions, listing resource groups and more using the Azure Management APIs.
+  version: 1.0.0
+  title: Azure Management APIs
+  contact:
+    email: angel@kmeleon.tech
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+tags:
+  - name: virtualMachine
+    description: Endpoints with actions in virtual machines
+  - name: resourceGroup
+    description: Get information about resources groups
+paths:
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vName}/restart:
+    post:
+      tags:
+        - virtualMachine
+      summary: Restart a virtual machine - endpoint to restart a specified virtual machine within a given Azure subscription, resource group and virtual machine name. requestBody is `{}` Content type by default is application/json
+      operationId: restartVm2
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: Subscription Id
+          required: true
+          schema:
+            type: string
+        - name: resourceGroupName
+          in: path
+          description: Resource Gruop Name
+          required: true
+          schema:
+            type: string
+        - name: vName
+          in: path
+          description: Virtual Machine Name
+          required: true
+          schema:
+            type: string
+        - name: api-version
+          in: query
+          description: API Version by default = 2023-03-01
+          required: false
+          schema:
+            type: string
+            default: '2023-03-01'
+      description: Restart a virtual machine - endpoint to restart a specified virtual machine within a given Azure subscription, resource group and virtual machine name. requestBody is `{}` and Content type by default is application/json
+      requestBody:
+         required: false
+         description: The request Body, it must be {}
+         content:
+             application/json:
+                 schema:
+                    type: object
+                    nullable: false
+      responses:
+        '200':
+          description: VM Restarted Successfully
+        '202':
+          description: Accepted and VM Restarted Successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines:
+    get:
+      tags:
+        - virtualMachine
+      summary: Get the list of all virtual machines in Azure for a given subscription and resource group using api-version parameter as 2023-07-01
+      operationId: getVms
+      parameters:
+        - name: api-version
+          in: query
+          description: API Version. Use always the default value = 2023-07-01
+          required: false
+          schema:
+            type: string
+            default: '2023-07-01'
+        - name: subscriptionId
+          in: path
+          description: Subscription Id
+          required: true
+          schema:
+            type: string
+        - name: resourceGroupName
+          in: path
+          description: Resource Group Name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of VMs fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VirtualMachineList'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - BearerAuth: []
+  /subscriptions:
+    get:
+      tags:
+        - subscription
+      summary: Gets a list of all Azure subscriptions
+      operationId: listSubscriptions
+      parameters:
+        - name: api-version
+          in: query
+          description: API Version by default = 2022-12-01
+          required: false
+          schema:
+            type: string
+            default: '2022-12-01'
+      responses:
+        '200':
+          description: OK - Returns an array of subscriptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionListResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudError'
+      security:
+        - BearerAuth: []
+  /subscriptions/{subscriptionId}/resourcegroups:
+    get:
+      tags:
+        - resourceGroup
+      summary: Fetch all resource groups for a given subscription ID
+      operationId: getResourceGroups
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: Subscription Id
+          required: true
+          schema:
+            type: string
+        - name: api-version
+          in: query
+          description: API Version by default = 2019-10-01
+          required: false
+          schema:
+            type: string
+            default: '2019-10-01'
+      responses:
+        '200':
+          description: List of Resource Groups fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceGroupList'
+      security:
+        - BearerAuth: []
+components:
+  schemas:
+    VirtualMachineList:
+      type: object
+      properties:
+        value:
+          type: array
+          description: An array of virtual machines
+          items:
+            $ref: '#/components/schemas/VirtualMachine'
+    VirtualMachine:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Virtual Machine ID
+        name:
+          type: string
+          description: Virtual Machine Name
+        type:
+          type: string
+          description: Virtual Machine type
+        location:
+          type: string
+          description: Location of the virtual machine
+    SubscriptionListResult:
+      type: object
+      properties:
+        nextLink:
+          type: string
+          description: The URL to get the next set of results.
+        value:
+          type: array
+          description: An array of subscriptions.
+          items:
+            $ref: '#/components/schemas/SubscriptionResult'
+    SubscriptionResult:
+      type: object
+      properties:
+        subscriptionId:
+          type: string
+          description: Subscription Id of the subscription, which is the identifier that the user prefer to refer a subscription.
+        displayName:
+          type: string
+          description: Display name of the subscription
+    ResourceGroupList:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceGroup'
+    ResourceGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Resource group ID
+        name:
+          type: string
+          description: Resource group name
+        type:
+          type: string
+          description: Resource type
+        location:
+          type: string
+          description: Location of the resource group
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+        properties:
+          type: object
+          properties:
+            provisioningState:
+              type: string
+              description: Provisioning state of the resource group
+    ErrorMessage:
+      type: object
+      properties:
+        code:
+          type: string
+          example: AuthorizationFailed
+        message:
+          type: string
+          example: The client don't have permission
+      description: Code and message error
+    CloudError:
+      type: object
+      properties:
+        error:
+          type: object
+      description: CloudError
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorMessage'
+      description: Error Response
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
